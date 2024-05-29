@@ -1,42 +1,43 @@
-
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "mysql"
-  url     = env("DATABASE_URL")
-}
-model User{
-id         Int     @id @default(autoincrement())
-name      String   @unique
-password  String  
-logs      Log[]
+  url      = env("DATABASE_URL")
 }
 
-model Round{
-id         Int     @id @default(autoincrement())
-name      String  
-logs      Log[]
-words     Word[]
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  password String
+  logs     Log[]
 }
 
-model Word{
-id         Int     @id @default(autoincrement())
-word      String  
-
-round     Round    @relation(fields: [roundId], references: [id])
-roundId   Int
+model Round {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  logs  Log[]
+  words Word[]
 }
 
-model Log{
-id         Int          @id @default(autoincrement())
-score      Int          @default(0) 
-mistake    Int          @default(0)  
-date       DateTime     @default(now())
+model Word {
+  id      Int    @id @default(autoincrement())
+  word    String
+  seconds Int    @default(120)
 
+  round   Round @relation(fields: [roundId], references: [id])
+  roundId Int
+}
 
-user     User    @relation(fields: [userId], references: [id])
-userId   Int
-round     Round    @relation(fields: [roundId], references: [id])
-roundId   Int
+model Log {
+  id      Int      @id @default(autoincrement())
+  score   Int      @default(0)
+  mistake Int      @default(0)
+  date    DateTime @default(now())
+
+  user    User  @relation(fields: [userId], references: [id])
+  userId  Int
+  round   Round @relation(fields: [roundId], references: [id])
+  roundId Int
 }

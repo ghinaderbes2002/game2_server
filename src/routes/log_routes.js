@@ -1,8 +1,13 @@
-import {createLog} from "../controllers/log_controllers.js";
+import { createLog } from "../controllers/log_controllers.js";
 
+const logRoute = (app, options, done) => {
+  app.route({
+    method: "POST",
+    url: "/createLog",
+    handler: createLog,
+  });
 
-const logRoute=(app ,options,done) =>
-{ app.post("/createLog",createLog);
-done();}
+  done();
+};
 
 export default logRoute;
